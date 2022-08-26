@@ -1,0 +1,26 @@
+0808 복습 정리
+
+String -> xml -> json(ajax로 데이터만 받아옴)
+
+*ajax(async javascript xml) : 비동기 통신. 페이지 이동 없이 서버로부터 데이터만 받아와서 
+페이지 일부분만 교체하는 기술
+
+*비동기 : 클라이언트에서 서버로 요청 -> 응답 대기 안하고 다른거 하다가 오면 콜백 함수로 처리
+
+*DOM aip : 서버로부터 데이터만 받아와서 페이지 일부만 교체
+태그내용 변경, 추가, 삭제, 스타일 변경, 이벤트 추가 및 삭제 포함
+
+*Jquery : 자바스크립트 모든 기능 함수화. 현재는 순수자바스크립트 기반으로도 호환됨
+
+
+1) let t3 = document.createElement("div") 
+새로만들기
+
+2) document.body.appendChild(t3)
+갖다붙임
+
+3) t3.setAttribute("class","result")
+속성 정하기
+
+4) t3.innerHTML = "결과보기"
+안에 내용

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="co.micol.prj.notice.map.NoticeMapper">
+	
+	<select id="noticeSelect" resultType="co.micol.prj.notice.service.NoticeVO">
+		SELECT NOTICE_ID,
+			   NOTICE_WRITER,
+			   NOTICE_TITLE,
+			   NOTICE_SUBJECT,
+			   NOTICE_DATE,
+			   NOTICE_HIT,
+			   NOTICE_ATTECH
+		FROM NOTICE
+		WHERE NOTICE_ID = #{noticeId}
+	</select>
+	
+	
+	
+	<insert id="noticeInsert" parameterType="co.micol.prj.notice.service.NoticeVO">				
+		<selectKey keyProperty="noticeId" order="BEFORE" resultType="int" ><!-- 쿼리결과를 받을 타입 -->
+			SELECT CASE WHEN MAX(NOTICE_ID) IS NULL THEN 1 ELSE MAX(NOTICE_ID) +1 END AS ID
+			FROM NOTICE
+		</selectKey>
+		
+		INSERT INTO NOTICE
+		VALUES(#{noticeId}, #{noticeWriter}, #{noticeTitle}, #{noticeSubject}, SYSDATE,
+				0, #{noticeAttech}, #{noticeAttechDir})
+	</insert>
+	
+	
+
+	<update id="noticeUpdate">
+		UPDATE NOTICE
+		<set> <!-- 변경사항 값이 있는 것만 update -->
+			<if test="noticeWriter != null">NOTICE_WRITER = #{noticeWriter}, </if>
+			<if test="noticeTitle != null">NOTICE_TITLE = #{noticeTitle}, </if>
+			<if test="noticeSubject != null">NOTICE_SUBJECT = #{noticeSubject}, </if>
+			<if test="noticeDate != null">NOTICE_DATE = #{noticeDate}, </if>
+			<if test="noticeAttech != null">NOTICE_ATTECH = #{noticeAttech}, </if>
+			<if test="noticeAttechDir != null">NOTICE_ATTECH_DIR = #{noticeAttechDir} </if>
+		</set>
+		WHERE NOTICE_ID = #{noticeId}
+	</update>
+	
+	
+	<delete id="noticeDelete"></delete>
+	
+	
+	
+	<select id="noticeSearch" resultType="co.micol.prj.notice.service.NoticeVO">
+		SELECT * 
+		FROM NOTICE
+		WHERE
+		<choose>
+			<when test="key == 1"> notice_title like '%'|| #{val} ||'%'</when>
+			<when test="key == 2"> notice_subject like '%'|| #{val} ||'%'</when>
+			<when test="key == 3"> notice_writer = #{val} </when>
+		</choose>
+	</select>
+	
+	
+	<update id="noticeHitUpdate">
+		UPDATE NOTICE SET NOTICE_HIT = NOTICE_HIT + 1 WHERE NOTICE_ID = #{noticeId}
+	</update>
+	
+	
+	
+</mapper>

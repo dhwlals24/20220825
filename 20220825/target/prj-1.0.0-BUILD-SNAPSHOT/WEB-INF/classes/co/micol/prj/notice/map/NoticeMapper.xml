@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="co.micol.prj.notice.map.NoticeMapper">
+	
+	<select id="noticeSelect" resultType="co.micol.prj.notice.service.NoticeVO">
+		SELECT NOTICE_ID,
+			   NOTICE_WRITER,
+			   NOTICE_TITLE,
+			   NOTICE_SUBJECT,
+			   NOTICE_DATE,
+			   NOTICE_HIT,
+			   NOTICE_ATTECH
+		FROM NOTICE
+		WHERE NOTICE_ID = #{noticeId}
+	</select>
+	
+	<insert id="noticeInsert" parameterType="co.micol.prj.notice.service.NoticeVO">				
+		<selectKey keyProperty="noticeId" order="BEFORE" resultType="int" ><!-- 쿼리결과를 받을 타입 -->
+			select case when max(notice_id) is null then 1 else max(notice_id) +1 end as id
+			from notice
+		</selectKey>
+		
+		insert into notice
+		values(#{noticeId}, #{noticeWriter}, #{noticeTitle}, #{noticeSubject}, sysdate,
+				0, #{noticeAttech}, #{noticeAttechDir})
+	</insert>
+
+	<update id="noticeUpdate"></update>
+	<delete id="noticeDelete"></delete>
+	<select id="noticeSearch"></select>
+	
+</mapper>
